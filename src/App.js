@@ -1,9 +1,11 @@
+import AdminContainer from "./AdminContainer";
+import AdminProvider, { AdminContext } from "./context/adminContext";
+
 function App() {
   return (
-    <div className="bg-black">
-      <h1>ADMIN</h1>
-      <h2>HOLA</h2>
-    </div>
+    <AdminProvider>
+      <AdminContainer />
+    </AdminProvider>
   );
 }
 
