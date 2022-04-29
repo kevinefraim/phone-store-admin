@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal/lib/components/Modal";
 import { AdminContext } from "../context/adminContext";
 
@@ -18,24 +18,26 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
-  const { brands, url, setProducts, products } = useContext(AdminContext);
+const ModalForm = () => {
+  const { brands, url, setProducts, products, closeModal, isOpen, activeItem } =
+    useContext(AdminContext);
+
   const initialState = {
-    name: "",
-    price: "",
-    description: "",
-    stock: "",
-    image: "",
-    brand: "",
+    name: activeItem?.name ?? "",
+    price: activeItem?.price ?? "",
+    description: activeItem?.description ?? "",
+    stock: activeItem?.stock ?? "",
+    image: activeItem?.image ?? "",
+    brand: activeItem?.brand.id ?? "",
   };
+  useEffect(() => {
+    setNewPhone(initialState);
+  }, [activeItem]);
   const [newPhone, setNewPhone] = useState(initialState);
   const { name, price, description, stock, image } = newPhone;
 
   const handleChange = ({ target }) => {
-    setNewPhone({
-      ...newPhone,
-      [target.name]: target.value,
-    });
+    setNewPhone({ ...newPhone, [target.name]: target.value });
   };
 
   const resetForm = () => {
@@ -51,19 +53,19 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
     try {
       const res = await axios.post(`${url}/phones/create`, newPhone);
 
-      closeAddModal();
+      closeModal();
       setProducts([...products, res.data.newPhone]);
       resetForm();
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(name);
 
   return (
     <Modal
       isOpen={isOpen}
-      onAfterOpen={afterOpenModal}
-      onRequestClose={closeAddModal}
+      onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Add Modal"
     >
@@ -78,9 +80,9 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
             className="bg-gray-200 rounded p-1"
             placeholder="Escribe el nombre"
             name="name"
-            type={"text"}
-            value={name}
+            type="text"
             onChange={handleChange}
+            value={name}
           />
         </div>
         <div className="mb-2 flex flex-col">
@@ -163,7 +165,7 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
           </button>
           <button
             className="rounded  bg-red-500 p-1.5 text-white"
-            onClick={closeAddModal}
+            onClick={closeModal}
           >
             Close
           </button>
@@ -173,4 +175,4 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
   );
 };
 
-export default ModalAdd;
+export default ModalForm;
