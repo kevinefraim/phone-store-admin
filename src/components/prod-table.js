@@ -3,8 +3,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../context/adminContext";
 import ProdTableItem from "./prod-table-item";
 
-const ProdTable = () => {
-  const { products } = useContext(AdminContext);
+const ProdTable = ({ onEditModal, activeItem }) => {
+  const { products, setProducts, url } = useContext(AdminContext);
+
+  const deleteItem = async (itemId) => {
+    try {
+      const res = await axios.delete(`${url}/phones/delete/${itemId}`);
+      setProducts(products.filter((prod) => prod.id !== itemId));
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <table className="table-auto min-w-full divide-y divide-gray-200 mt-3">
@@ -50,7 +60,16 @@ const ProdTable = () => {
       </thead>
       <tbody>
         {products?.map((item) => (
-          <tr key={item.id}>{<ProdTableItem item={item} />}</tr>
+          <tr key={item.id}>
+            {
+              <ProdTableItem
+                item={item}
+                deleteItem={deleteItem}
+                onEditModal={onEditModal}
+                activeItem={activeItem}
+              />
+            }
+          </tr>
         ))}
       </tbody>
     </table>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal/lib/components/Modal";
 import { AdminContext } from "../context/adminContext";
 
@@ -18,7 +18,7 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
+const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
   const { brands, url, setProducts, products } = useContext(AdminContext);
   const initialState = {
     name: "",
@@ -28,6 +28,11 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
     image: "",
     brand: "",
   };
+  console.log(activeItem?.name);
+
+  useEffect(() => {
+    setNewPhone(initialState);
+  }, [activeItem]);
   const [newPhone, setNewPhone] = useState(initialState);
   const { name, price, description, stock, image } = newPhone;
 
@@ -62,12 +67,11 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
   return (
     <Modal
       isOpen={isOpen}
-      onAfterOpen={afterOpenModal}
       onRequestClose={closeAddModal}
       style={customStyles}
       contentLabel="Add Modal"
     >
-      <h5 className="mb-4">Agrega un producto</h5>
+      <h5 className="mb-4">{activeItem ? "Edita" : "Agrega un producto"}</h5>
 
       <form onSubmit={addProduct} className="flex flex-col">
         <div className="mb-2 flex flex-col">
@@ -79,7 +83,7 @@ const ModalAdd = ({ isOpen, afterOpenModal, closeAddModal }) => {
             placeholder="Escribe el nombre"
             name="name"
             type={"text"}
-            value={name}
+            value={activeItem ? activeItem?.name : name}
             onChange={handleChange}
           />
         </div>
