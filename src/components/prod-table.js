@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../context/adminContext";
 import ProdTableItem from "./prod-table-item";
 
-const ProdTable = () => {
+const ProdTable = ({ onEditModal, activeItem }) => {
   const { products, setProducts, url } = useContext(AdminContext);
 
   const deleteItem = async (itemId) => {
@@ -61,7 +61,14 @@ const ProdTable = () => {
       <tbody>
         {products?.map((item) => (
           <tr key={item.id}>
-            {<ProdTableItem item={item} deleteItem={deleteItem} />}
+            {
+              <ProdTableItem
+                item={item}
+                deleteItem={deleteItem}
+                onEditModal={onEditModal}
+                activeItem={activeItem}
+              />
+            }
           </tr>
         ))}
       </tbody>

@@ -18,10 +18,8 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const ModalForm = () => {
-  const { brands, url, setProducts, products, closeModal, isOpen, activeItem } =
-    useContext(AdminContext);
-
+const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
+  const { brands, url, setProducts, products } = useContext(AdminContext);
   const initialState = {
     name: activeItem?.name ?? "",
     price: activeItem?.price ?? "",
@@ -30,6 +28,8 @@ const ModalForm = () => {
     image: activeItem?.image ?? "",
     brand: activeItem?.brand.id ?? "",
   };
+  console.log(activeItem?.name);
+
   useEffect(() => {
     setNewPhone(initialState);
   }, [activeItem]);
@@ -65,11 +65,11 @@ const ModalForm = () => {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={closeModal}
+      onRequestClose={closeAddModal}
       style={customStyles}
       contentLabel="Add Modal"
     >
-      <h5 className="mb-4">Agrega un producto</h5>
+      <h5 className="mb-4">{activeItem ? "Edita" : "Agrega un producto"}</h5>
 
       <form onSubmit={addProduct} className="flex flex-col">
         <div className="mb-2 flex flex-col">
@@ -80,7 +80,8 @@ const ModalForm = () => {
             className="bg-gray-200 rounded p-1"
             placeholder="Escribe el nombre"
             name="name"
-            type="text"
+            type={"text"}
+            value={activeItem ? activeItem?.name : name}
             onChange={handleChange}
             value={name}
           />

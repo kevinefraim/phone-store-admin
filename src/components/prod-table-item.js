@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import { AdminContext } from "../context/adminContext";
-import ModalForm from "./Modal";
+import React from "react";
+import ModalAdd from "./Modal";
 
-const ProdTableItem = ({ item, deleteItem }) => {
+const ProdTableItem = ({ item, deleteItem, onEditModal, activeItem }) => {
   const { id, name, description, image, stock, price, brand } = item;
-  const { onEditModal } = useContext(AdminContext);
 
   return (
     <>
@@ -21,7 +19,7 @@ const ProdTableItem = ({ item, deleteItem }) => {
         >
           Editar
         </button>
-        <ModalForm />
+        <ModalAdd activeItem={activeItem} />
       </td>
       <td className="px-6 py-2">
         <button
