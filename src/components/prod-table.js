@@ -5,7 +5,7 @@ import ProdTableItem from "./prod-table-item";
 
 const ProdTable = () => {
   const { products } = useContext(AdminContext);
-  console.log(products);
+
   return (
     <table className="table-auto min-w-full divide-y divide-gray-200 mt-3">
       <thead className="bg-gray-100">
