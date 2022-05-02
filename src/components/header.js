@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 
 const Header = ({ openAddModal }) => {
   const { handleLogout } = useContext(AuthContext);
   return (
     <header>
       <div className="container-2xl p-12 flex justify-between">
-        <h1 className="text-5xl">Panel de ADMIN</h1>
+        <h1 className="text-5xl">Panel de ADMIN: Phone-Store</h1>
         <div>
           <button
             onClick={openAddModal}

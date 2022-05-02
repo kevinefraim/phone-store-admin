@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminContainer from "./AdminContainer";
 import LogIn from "./components/Login";
 import AdminProvider from "./context/adminContext";
-import AuthProvider from "./context/AuthContext";
+import AuthProvider, { AuthContext } from "./context/authContext";
 import { PrivateRouteAdmin } from "./routes/PrivateRouteAdmin";
 
 function App() {

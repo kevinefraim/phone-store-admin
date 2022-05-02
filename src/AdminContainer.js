@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "./components/header";
 import ModalAdd from "./components/Modal-add";
 import ProdTable from "./components/prod-table";
@@ -20,6 +21,7 @@ const AdminContainer = () => {
     setIsOpen(true);
     setActiveItem(item);
   };
+
   return (
     <>
       <Header openAddModal={openAddModal} />

@@ -15,8 +15,8 @@ const LoginForm = ({
         <h2 className=" bg-white text-blue-primary text-center pb-0.5 inline-block w-1/4 rounded">
           Inicia Sesión
         </h2>
-        {error && typeof error.msg === "string" && (
-          <ErrorForm error={error.msg} />
+        {error && typeof error?.response.data?.msg === "string" && (
+          <ErrorForm error={error?.response.data?.msg} />
         )}
       </div>
       <div className="flex flex-col m-2">
@@ -31,7 +31,9 @@ const LoginForm = ({
           placeholder="Ingrese su email"
           className="p-1 rounded"
         />
-        {error?.msg?.email && <ErrorForm error={error?.msg.email[0]} />}
+        {error?.response.data?.msg.email && (
+          <ErrorForm error={error?.response.data?.msg.email[0]} />
+        )}
       </div>
       <div className="flex flex-col m-2">
         <label className="text-white mb-1" htmlFor="password">
@@ -46,7 +48,9 @@ const LoginForm = ({
           min={0}
           className="p-1 rounded"
         />
-        {error?.msg?.password && <ErrorForm error={error?.msg.password[0]} />}
+        {error?.response.data?.msg.password && (
+          <ErrorForm error={error?.response.data?.msg.password[0]} />
+        )}
       </div>
       {children}
       <div className="flex justify-center">

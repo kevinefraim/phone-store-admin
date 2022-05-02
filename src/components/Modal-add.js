@@ -37,7 +37,7 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
 
   const handleChange = ({ target }) => {
     setNewPhone({
-      ...initialState,
+      ...newPhone,
       [target.name]: target.value,
     });
   };
@@ -48,7 +48,9 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
 
   const addProduct = async () => {
     try {
-      const res = await axios.post(`${url}/phones/create`, newPhone);
+      const res = await axios.post(`${url}/phones/create`, newPhone, {
+        headers: { "x-token": localStorage.getItem("token") },
+      });
 
       setProducts([...products, res.data.newPhone]);
     } catch (error) {

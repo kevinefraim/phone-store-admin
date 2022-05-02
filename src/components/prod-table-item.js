@@ -3,6 +3,7 @@ import React from "react";
 const ProdTableItem = ({ item, deleteItem, onEditModal }) => {
   return (
     <>
+      <td className="px-6 py-2">{item?.id}</td>
       <td className="px-6 py-2">
         <img src="#" alt={item?.name} />
       </td>

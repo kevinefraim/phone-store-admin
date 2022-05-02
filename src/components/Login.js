@@ -1,11 +1,9 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 
 import LoginForm from "./LoginForm";
-
-// import "./Login.css";
 
 const LogIn = () => {
   const { handleActiveUser, activeUser } = useContext(AuthContext);
@@ -20,17 +18,20 @@ const LogIn = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/login`,
+        `${process.env.REACT_APP_API_URL}/users/login/admin`,
         {
           email,
           password: pass,
         }
       );
-      if (data.ok) navigate("/");
-
-      handleActiveUser(data.loginUser, data.token);
+      if (data?.loginUser.isAdmin) {
+        handleActiveUser(data.loginUser, data.token);
+        navigate("/");
+      } else {
+        console.log("error");
+      }
     } catch (error) {
-      setError(error.response.data);
+      setError(error);
     }
   };
 
