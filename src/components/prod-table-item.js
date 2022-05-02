@@ -5,7 +5,11 @@ const ProdTableItem = ({ item, deleteItem, onEditModal }) => {
     <>
       <td className="px-6 py-2">{item?.id}</td>
       <td className="px-6 py-2">
-        <img src="#" alt={item?.name} />
+        <img
+          className="w-20 rounded-full"
+          src={item.image?.url}
+          alt={item?.name}
+        />
       </td>
       <td className="px-6 py-2">{item?.brand.name}</td>
       <td className="px-6 py-2">{item?.name}</td>

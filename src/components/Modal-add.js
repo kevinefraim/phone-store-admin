@@ -29,11 +29,12 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
     brand: activeItem?.brand.id.toString() ?? "",
   };
   const [newPhone, setNewPhone] = useState(initialState);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     setNewPhone(initialState);
   }, [activeItem]);
-  const { name, price, description, stock, image } = newPhone;
+  const { name, price, description, stock } = newPhone;
 
   const handleChange = ({ target }) => {
     setNewPhone({
@@ -45,11 +46,23 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
   const resetForm = () => {
     setNewPhone(initialState);
   };
+  const persona = {
+    edad: 10,
+    nombre: "kevin",
+  };
 
   const addProduct = async () => {
+    const formData = new FormData();
+    Object.keys(newPhone).map((phone) => {
+      formData.append(phone, newPhone[phone]);
+    });
+    formData.append("image", image);
     try {
-      const res = await axios.post(`${url}/phones/create`, newPhone, {
-        headers: { "x-token": localStorage.getItem("token") },
+      const res = await axios.post(`${url}/phones/create`, formData, {
+        headers: {
+          "x-token": localStorage.getItem("token"),
+          "content-type": "multipart/form-data",
+        },
       });
 
       setProducts([...products, res.data.newPhone]);
@@ -82,10 +95,6 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
   //submit form validating if it is updating or creating
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    newPhone.price = +newPhone.price;
-    newPhone.stock = +newPhone.stock;
-    newPhone.brand = +newPhone.brand;
 
     if (activeItem) {
       updateProduct();
@@ -184,9 +193,8 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
             placeholder="ingresa imagen"
             className="bg-gray-200 rounded p-1"
             name="image"
-            type="text"
-            value={image}
-            onChange={handleChange}
+            type="file"
+            onChange={({ target }) => setImage(target.files[0])}
           />
         </div>
         <div className="flex justify-end gap-2">
