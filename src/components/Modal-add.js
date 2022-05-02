@@ -21,24 +21,23 @@ Modal.setAppElement("#root");
 const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
   const { brands, url, setProducts, products } = useContext(AdminContext);
   const initialState = {
-    name: "",
-    price: "",
-    description: "",
-    stock: "",
-    image: "",
-    brand: "",
+    name: activeItem?.name ?? "",
+    price: activeItem?.price ?? "",
+    description: activeItem?.description ?? "",
+    stock: activeItem?.stock ?? "",
+    image: activeItem?.image ?? "",
+    brand: activeItem?.brand.id.toString() ?? "",
   };
-  console.log(activeItem?.name);
+  const [newPhone, setNewPhone] = useState(initialState);
 
   useEffect(() => {
     setNewPhone(initialState);
   }, [activeItem]);
-  const [newPhone, setNewPhone] = useState(initialState);
   const { name, price, description, stock, image } = newPhone;
 
   const handleChange = ({ target }) => {
     setNewPhone({
-      ...newPhone,
+      ...initialState,
       [target.name]: target.value,
     });
   };
@@ -47,23 +46,53 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
     setNewPhone(initialState);
   };
 
-  const addProduct = async (e) => {
-    e.preventDefault();
-    newPhone.price = +newPhone.price;
-    newPhone.stock = +newPhone.stock;
-    newPhone.brand = +newPhone.brand;
-
+  const addProduct = async () => {
     try {
       const res = await axios.post(`${url}/phones/create`, newPhone);
 
-      closeAddModal();
       setProducts([...products, res.data.newPhone]);
-      resetForm();
     } catch (error) {
       console.log(error);
     }
   };
 
+  const updateProduct = async () => {
+    try {
+      const res = await axios.put(
+        `${url}/phones/update/${activeItem?.id}`,
+        newPhone,
+        {
+          headers: { "x-token": localStorage.getItem("token") },
+        }
+      );
+      setProducts(
+        products.map((product) =>
+          product.id === activeItem?.id
+            ? { ...product, ...res.data.newUpdatedPhone }
+            : product
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //submit form validating if it is updating or creating
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    newPhone.price = +newPhone.price;
+    newPhone.stock = +newPhone.stock;
+    newPhone.brand = +newPhone.brand;
+
+    if (activeItem) {
+      updateProduct();
+    } else {
+      addProduct();
+    }
+    closeAddModal();
+    resetForm();
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -73,7 +102,7 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
     >
       <h5 className="mb-4">{activeItem ? "Edita" : "Agrega un producto"}</h5>
 
-      <form onSubmit={addProduct} className="flex flex-col">
+      <form onSubmit={handleSubmit} className="flex flex-col">
         <div className="mb-2 flex flex-col">
           <label className="mb-2" htmlFor="name">
             Nombre:
@@ -83,7 +112,7 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
             placeholder="Escribe el nombre"
             name="name"
             type={"text"}
-            value={activeItem ? activeItem?.name : name}
+            value={name}
             onChange={handleChange}
           />
         </div>

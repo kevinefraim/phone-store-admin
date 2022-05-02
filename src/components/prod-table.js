@@ -3,12 +3,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../context/adminContext";
 import ProdTableItem from "./prod-table-item";
 
-const ProdTable = ({ onEditModal, activeItem }) => {
+const ProdTable = ({ onEditModal, activeItem, closeAddModal }) => {
   const { products, setProducts, url } = useContext(AdminContext);
 
   const deleteItem = async (itemId) => {
     try {
-      const res = await axios.delete(`${url}/phones/delete/${itemId}`);
+      const res = await axios.delete(`${url}/phones/delete/${itemId}`, {
+        headers: { "x-token": localStorage.getItem("token") },
+      });
       setProducts(products.filter((prod) => prod.id !== itemId));
       console.log(res);
     } catch (error) {
@@ -60,13 +62,12 @@ const ProdTable = ({ onEditModal, activeItem }) => {
       </thead>
       <tbody>
         {products?.map((item) => (
-          <tr key={item.id}>
+          <tr key={item?.id}>
             {
               <ProdTableItem
                 item={item}
                 deleteItem={deleteItem}
                 onEditModal={onEditModal}
-                activeItem={activeItem}
               />
             }
           </tr>

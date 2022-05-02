@@ -1,11 +1,22 @@
+import { Route, Routes } from "react-router-dom";
 import AdminContainer from "./AdminContainer";
-import AdminProvider, { AdminContext } from "./context/adminContext";
+import LogIn from "./components/Login";
+import AdminProvider from "./context/adminContext";
+import AuthProvider from "./context/AuthContext";
+import { PrivateRouteAdmin } from "./routes/PrivateRouteAdmin";
 
 function App() {
   return (
-    <AdminProvider>
-      <AdminContainer />
-    </AdminProvider>
+    <AuthProvider>
+      <AdminProvider>
+        <Routes>
+          <Route element={<PrivateRouteAdmin />}>
+            <Route path="/" element={<AdminContainer />} />
+          </Route>
+          <Route path="/login" element={<LogIn />} />
+        </Routes>
+      </AdminProvider>
+    </AuthProvider>
   );
 }
 

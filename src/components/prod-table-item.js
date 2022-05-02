@@ -1,17 +1,14 @@
 import React from "react";
-import ModalAdd from "./Modal-add";
 
-const ProdTableItem = ({ item, deleteItem, onEditModal, activeItem }) => {
-  const { id, name, description, image, stock, price, brand } = item;
-
+const ProdTableItem = ({ item, deleteItem, onEditModal }) => {
   return (
     <>
       <td className="px-6 py-2">
-        <img src="#" alt={name} />
+        <img src="#" alt={item?.name} />
       </td>
-      <td className="px-6 py-2">{brand.name}</td>
-      <td className="px-6 py-2">{name}</td>
-      <td className="px-6 py-2">${price}</td>
+      <td className="px-6 py-2">{item?.brand.name}</td>
+      <td className="px-6 py-2">{item?.name}</td>
+      <td className="px-6 py-2">${item?.price}</td>
       <td className="px-6 py-2">
         <button
           onClick={() => onEditModal(item)}
@@ -19,11 +16,10 @@ const ProdTableItem = ({ item, deleteItem, onEditModal, activeItem }) => {
         >
           Editar
         </button>
-        <ModalAdd activeItem={activeItem} />
       </td>
       <td className="px-6 py-2">
         <button
-          onClick={() => deleteItem(id)}
+          onClick={() => deleteItem(item?.id)}
           className="bg-red-500 text-white p-2 rounded-full"
         >
           X

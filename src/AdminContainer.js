@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "./components/header";
+import ModalAdd from "./components/Modal-add";
 import ProdTable from "./components/prod-table";
 
 const AdminContainer = () => {
@@ -21,13 +22,19 @@ const AdminContainer = () => {
   };
   return (
     <>
-      <Header
-        openAddModal={openAddModal}
+      <Header openAddModal={openAddModal} />
+      <ProdTable
+        onEditModal={onEditModal}
+        activeItem={activeItem}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        closeAddModal={closeAddModal}
+      />
+      <ModalAdd
+        activeItem={activeItem}
         isOpen={isOpen}
         closeAddModal={closeAddModal}
-        setIsOpen={setIsOpen}
       />
-      <ProdTable onEditModal={onEditModal} activeItem={activeItem} />
     </>
   );
 };
