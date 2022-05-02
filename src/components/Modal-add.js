@@ -104,6 +104,7 @@ const ModalAdd = ({ isOpen, closeAddModal, activeItem }) => {
     closeAddModal();
     resetForm();
   };
+
   return (
     <Modal
       isOpen={isOpen}
