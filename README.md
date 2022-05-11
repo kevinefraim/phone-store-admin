@@ -1,1 +1,5 @@
-Admin Panel for Phones E-Commerce
+Phone-Store ADMIN BackOffice
+
+Tecnologies implemented:
+- Tailwind
+- Axios
